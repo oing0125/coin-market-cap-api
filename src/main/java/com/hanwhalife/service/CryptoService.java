@@ -25,6 +25,7 @@ public class CryptoService {
     private static final String LIST_LATEST_PATH = "/cryptocurrency/listings/latest";
     private static final String LIST_CATEGORIES_PATH = "/cryptocurrency/categories";
     private static final String GET_CATEGORY_BY_ID_PATH = "/cryptocurrency/category";
+    private static final String GET_CRYPTO_INFO_BY_ID_PATH = "/cryptocurrency/info";
 
     public ResponseVo test(){
         return new ResponseVo();
@@ -35,6 +36,12 @@ public class CryptoService {
         params.put("limit", searchParamVo.getSize() + "");
         params.put("start", searchParamVo.getStart() + "");
         return httpUtil.doGet(LIST_LATEST_PATH, params);
+    }
+
+    public JSONObject info(String id){
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("id", id);
+        return httpUtil.doGet(GET_CRYPTO_INFO_BY_ID_PATH, params);
     }
 
     public JSONObject pageCategories(CryptoSearchParamVo searchParamVo){

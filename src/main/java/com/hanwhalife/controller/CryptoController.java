@@ -33,6 +33,12 @@ public class CryptoController {
         return ResponseEntity.status(HttpStatus.OK).body(result.toString());
     }
 
+    @GetMapping("/crypto/info/{id}")
+    public ResponseEntity pageCrypto(@PathVariable("id") String id){
+        JSONObject result = cryptoService.info(id);
+        return ResponseEntity.status(HttpStatus.OK).body(result.toString());
+    }
+
     @GetMapping("/crypto/categories")
     public ResponseEntity pageCryptoCategories(CryptoSearchParamVo searchParamVo){
         JSONObject result = cryptoService.pageCategories(searchParamVo);
