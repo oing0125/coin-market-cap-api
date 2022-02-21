@@ -2,6 +2,7 @@ package com.hanwhalife.utils;
 
 import com.hanwhalife.vo.ResponseVo;
 import okhttp3.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,11 @@ import java.util.Map;
 @Component
 public class HttpUtil {
 
-    @Value("${coinMarketCap.endpoint}")
-    private String endpoint;
-
-    @Value("${coinMarketCap.apiKey")
+    @Value("${coinMarketCap.apiKey}")
     private String CMC_API_KEY;
 
-    public JSONObject doGet(String path, Map<String, String> params){
+
+    public JSONObject doGet(String endpoint, String path, Map<String, String> params){
         HttpUrl.Builder httpBuilder = HttpUrl.get(endpoint + path).newBuilder();
         if(!CollectionUtils.isEmpty(params)){
             params.keySet()
@@ -46,9 +45,14 @@ public class HttpUtil {
         JSONObject resultJson = null;
         try {
             Response response = call.execute();
-            resultJson = new JSONObject(response.body().string());
-        } catch (
-                IOException e) {
+            String resStr = response.body().string();
+            if(resStr.startsWith("[")){
+                resultJson = new JSONObject();
+                resultJson.put("result", new JSONArray(resStr));
+            }else{
+                resultJson = new JSONObject(resStr);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return resultJson;

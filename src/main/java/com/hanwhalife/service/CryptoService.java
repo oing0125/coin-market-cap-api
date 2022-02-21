@@ -22,6 +22,10 @@ public class CryptoService {
     @Autowired
     HttpUtil httpUtil;
 
+    @Value("${coinMarketCap.endpoint}")
+    private String coinMarketCapEndpoint;
+
+
     private static final String LIST_LATEST_PATH = "/cryptocurrency/listings/latest";
     private static final String LIST_CATEGORIES_PATH = "/cryptocurrency/categories";
     private static final String GET_CATEGORY_BY_ID_PATH = "/cryptocurrency/category";
@@ -35,25 +39,25 @@ public class CryptoService {
         Map<String, String> params = new HashMap<String, String>();
         params.put("limit", searchParamVo.getSize() + "");
         params.put("start", searchParamVo.getStart() + "");
-        return httpUtil.doGet(LIST_LATEST_PATH, params);
+        return httpUtil.doGet(coinMarketCapEndpoint, LIST_LATEST_PATH, params);
     }
 
     public JSONObject info(String id){
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", id);
-        return httpUtil.doGet(GET_CRYPTO_INFO_BY_ID_PATH, params);
+        return httpUtil.doGet(coinMarketCapEndpoint, GET_CRYPTO_INFO_BY_ID_PATH, params);
     }
 
     public JSONObject pageCategories(CryptoSearchParamVo searchParamVo){
         Map<String, String> params = new HashMap<String, String>();
         params.put("limit", searchParamVo.getSize() + "");
         params.put("start", searchParamVo.getStart() + "");
-        return httpUtil.doGet(LIST_CATEGORIES_PATH, params);
+        return httpUtil.doGet(coinMarketCapEndpoint, LIST_CATEGORIES_PATH, params);
     }
 
     public JSONObject getCategoryById(String id){
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", id);
-        return httpUtil.doGet(GET_CATEGORY_BY_ID_PATH, params);
+        return httpUtil.doGet(coinMarketCapEndpoint, GET_CATEGORY_BY_ID_PATH, params);
     }
 }
